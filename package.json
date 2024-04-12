@@ -1,0 +1,14 @@
+{
+  "name": "graphql-server",
+  "version": "1.0.0",
+  "description": "A simple GraphQL server using Express",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.6.0"
+  }
+}

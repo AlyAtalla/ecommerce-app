@@ -1,0 +1,36 @@
+# Define the Category type with consistent naming conventions
+type Category {
+ id: ID!
+ name: String!
+ description: String
+}
+
+# Define the Query type for fetching data
+type Query {
+ # Fetch a single category by ID
+ getCategory(id: ID!): Category
+ # Fetch all categories
+ getAllCategories: [Category]
+}
+
+# Define the Mutation type for creating, updating, and deleting categories
+type Mutation {
+ # Create a new category
+ createCategory(input: CreateCategoryInput!): Category
+ # Update an existing category
+ updateCategory(input: UpdateCategoryInput!): Category
+ # Delete a category by ID
+ deleteCategory(id: ID!): Boolean
+}
+
+# Define input types for creating and updating categories
+input CreateCategoryInput {
+ name: String!
+ description: String
+}
+
+input UpdateCategoryInput {
+ id: ID!
+ name: String!
+ description: String
+}
