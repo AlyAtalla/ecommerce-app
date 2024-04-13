@@ -15,38 +15,46 @@ $products = $data['products'] ?? [];
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=scandiweb;charset=utf8mb4', 'root', '0120852868');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Insert Categories into Database
-$pdo->exec("CREATE TABLE IF NOT EXISTS categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-)");
+try {
+    // Insert Categories into Database
+    $pdo->exec("CREATE TABLE IF NOT EXISTS categories (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL
+    )");
 
-foreach ($categories as $category) {
-    $stmt = $pdo->prepare("INSERT INTO categories (name) VALUES (:name)");
-    $stmt->execute(['name' => $category['name']]);
+    foreach ($categories as $category) {
+        $stmt = $pdo->prepare("INSERT INTO categories (name) VALUES (:name)");
+        $stmt->execute(['name' => $category['name']]);
+        
+        // Output a success message for each inserted category
+        echo "Category '{$category['name']}' inserted successfully.<br>";
+    }
+
+    // Insert Products into Database
+    $pdo->exec("CREATE TABLE IF NOT EXISTS products (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        in_stock BOOLEAN NOT NULL,
+        description TEXT,
+        category VARCHAR(255),
+        brand VARCHAR(255)
+    )");
+
+    foreach ($products as $product) {
+        $stmt = $pdo->prepare("INSERT INTO products (name, in_stock, description, category, brand) VALUES (:name, :in_stock, :description, :category, :brand)");
+        $stmt->execute([
+            'name' => $product['name'],
+            'in_stock' => $product['inStock'] ? 1 : 0,
+            'description' => $product['description'],
+            'category' => $product['category'],
+            'brand' => $product['brand']
+        ]);
+    }
+
+    echo "Data imported successfully.";
+} catch (PDOException $e) {
+    // If an error occurs during any part of the import process, catch the exception and output the error message
+    echo "Error: " . $e->getMessage();
 }
-
-// Insert Products into Database
-$pdo->exec("CREATE TABLE IF NOT EXISTS products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    in_stock BOOLEAN NOT NULL,
-    description TEXT,
-    category VARCHAR(255),
-    brand VARCHAR(255)
-)");
-
-foreach ($products as $product) {
-    $stmt = $pdo->prepare("INSERT INTO products (name, in_stock, description, category, brand) VALUES (:name, :in_stock, :description, :category, :brand)");
-    $stmt->execute([
-        'name' => $product['name'],
-        'in_stock' => $product['inStock'] ? 1 : 0,
-        'description' => $product['description'],
-        'category' => $product['category'],
-        'brand' => $product['brand']
-    ]);
-}
-
-echo "Data imported successfully.";
 
 ?>
