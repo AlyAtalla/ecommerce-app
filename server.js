@@ -2,16 +2,78 @@ const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
 
+// Mock data (replace with actual data retrieval logic)
+const data = require('./data.json');
+const categories = data.categories;
+
 // Define your GraphQL schema
 const schema = buildSchema(`
+  type Category {
+    id: ID!
+    name: String!
+    description: String
+  }
+
   type Query {
-    hello: String
+    getCategory(id: ID!): Category
+    getAllCategories: [Category]
+  }
+
+  input CreateCategoryInput {
+    name: String!
+    description: String
+  }
+
+  input UpdateCategoryInput {
+    id: ID!
+    name: String!
+    description: String
+  }
+
+  type Mutation {
+    createCategory(input: CreateCategoryInput!): Category
+    updateCategory(input: UpdateCategoryInput!): Category
+    deleteCategory(id: ID!): Boolean
   }
 `);
 
 // Define your resolvers
 const root = {
-  hello: () => 'Hello, world!',
+  getCategory: ({ id }) => {
+    return categories.find(category => category.id === id);
+  },
+  getAllCategories: () => {
+    return categories;
+  },
+  createCategory: ({ input }) => {
+    const newCategory = {
+      id: String(categories.length + 1),
+      name: input.name,
+      description: input.description || null,
+    };
+    categories.push(newCategory);
+    return newCategory;
+  },
+  updateCategory: ({ input }) => {
+    const categoryIndex = categories.findIndex(category => category.id === input.id);
+    if (categoryIndex === -1) {
+      throw new Error('Category not found');
+    }
+    categories[categoryIndex] = {
+      id: input.id,
+      name: input.name,
+      description: input.description || null,
+    };
+    return categories[categoryIndex];
+  },
+  deleteCategory: ({ id }) => {
+    const categoryIndex = categories.findIndex(category => category.id === id);
+    if (categoryIndex === -1) {
+      throw new Error('Category not found');
+    }
+    categories.splice(categoryIndex, 1);
+    return true;
+  },
 };
 
 // Create an Express server
