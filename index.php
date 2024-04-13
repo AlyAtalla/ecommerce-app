@@ -5,6 +5,7 @@ require_once __DIR__ . '/vendor/autoload.php'; // Include Composer's autoloader
 require_once __DIR__ . '/backend/config/config.php'; // Adjust path to config.php
 require_once __DIR__ . '/backend/database/database.php'; // Include your database connection
 require_once __DIR__ . '/backend/graphql/resolvers/CategoryResolver.php';
+require_once __DIR__ . '/Router.php';
 
 use GraphQL\Server\StandardServer;
 use GraphQL\Type\Schema;
