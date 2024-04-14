@@ -5,9 +5,17 @@ const { buildSchema } = require('graphql');
 // Mock data (replace with actual data retrieval logic)
 const data = require('./data.json');
 const categories = data.categories;
+const products = data.products;
 
 // Define your GraphQL schema
 const schema = buildSchema(`
+  type Product {
+    id: ID!
+    name: String!
+    price: Float!
+    category: Category
+  }
+
   type Category {
     id: ID!
     name: String!
@@ -15,6 +23,8 @@ const schema = buildSchema(`
   }
 
   type Query {
+    getProduct(id: ID!): Product
+    getAllProducts: [Product]
     getCategory(id: ID!): Category
     getAllCategories: [Category]
   }
@@ -39,6 +49,12 @@ const schema = buildSchema(`
 
 // Define your resolvers
 const root = {
+  getProduct: ({ id }) => {
+    return products.find(product => product.id === id);
+  },
+  getAllProducts: () => {
+    return products;
+  },
   getCategory: ({ id }) => {
     return categories.find(category => category.id === id);
   },

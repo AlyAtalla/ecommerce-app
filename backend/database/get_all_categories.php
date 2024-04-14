@@ -1,7 +1,7 @@
 <?php
 
 // Include the Database class
-require_once __DIR__ . '/path/to/your/Database.php';
+require_once __DIR__ . 'Database.php';
 
 // Create a new instance of the Database class
 $db = new Database();
