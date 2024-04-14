@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Resolvers;
 
-use App\Models\Attribute; // Assuming you have an Attribute model
+use App\Models\Attribute;
 
 class AttributeResolver
 {
