@@ -30,7 +30,21 @@ class Router {
 
     // Handle POST requests to the root path ("/")
     protected function handlePostRequest() {
-        // Your logic for handling POST requests to the root path ("/") goes here
-        echo 'Handling POST request to the root path ("/")';
+        // Check if the request contains any POST data
+        if ($_SERVER['CONTENT_LENGTH'] > 0) {
+            // Retrieve and process the POST data
+            $postData = file_get_contents('php://input');
+            $parsedData = json_decode($postData, true);
+
+            // Perform any necessary processing based on the POST data
+            // For example, you might save the data to a database, perform validation, etc.
+            // Here's a simple example of echoing back the received data
+            echo 'Received POST data: ' . json_encode($parsedData);
+        } else {
+            // If no POST data is received, handle the request accordingly
+            echo 'No POST data received';
+        }
     }
 }
+
+?>

@@ -79,6 +79,17 @@ const root = {
 // Create an Express server
 const app = express();
 
+// Route handler for GET requests to the root path ("/")
+app.get('/', (req, res) => {
+  res.send('Hello, World!'); // Or any other response you want to send
+});
+
+// Route handler for POST requests to the root path ("/")
+app.post('/', (req, res) => {
+  // Your logic for handling POST requests to the root path ("/") goes here
+  res.send('Handling POST request to the root path ("/")');
+});
+
 // Set up the /graphql route to handle GraphQL requests
 app.use('/graphql', graphqlHTTP({
   schema: schema,
