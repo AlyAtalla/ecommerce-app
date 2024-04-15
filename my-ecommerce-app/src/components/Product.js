@@ -1,4 +1,5 @@
 import React from 'react';
+import { gql } from '@apollo/client';
 
 const Product = ({ product, addToCart }) => {
   const handleAddToCart = () => {

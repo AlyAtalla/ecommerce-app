@@ -1,8 +1,8 @@
 <?php
 
-namespace App\GraphQL\Resolvers;
+namespace Backend\GraphQL\Resolvers;
 
-use App\Models\Attribute;
+use Backend\Classes\Attribute;
 
 class AttributeResolver
 {

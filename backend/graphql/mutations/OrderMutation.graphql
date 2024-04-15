@@ -1,9 +1,0 @@
-type Mutation {
-    createOrder(input: OrderInput!): Order
-    updateOrder(id: ID!, input: OrderInput!): Order
-    deleteOrder(id: ID!): Boolean
-}
-
-input OrderInput {
-    // Define input fields for order creation/updation
-}

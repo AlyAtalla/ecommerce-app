@@ -12,7 +12,7 @@ $products = $data['products'] ?? [];
 
 // Database Connection
 // Replace DB_HOST, DB_NAME, DB_USER, and DB_PASSWORD with your database credentials
-$pdo = new PDO('mysql:host=localhost;port=4000;dbname=scandiweb;charset=utf8mb4', 'root', '0120852868');
+$pdo = new PDO('mysql:host=localhost;port=8000;dbname=scandiweb;charset=utf8mb4', 'root', '0120852868');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try {

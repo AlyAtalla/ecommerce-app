@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Resolvers;
+namespace Backend\GraphQL\Resolvers;
 
 use App\Models\Category; // Assuming you have a Category model
 

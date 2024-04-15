@@ -34,17 +34,16 @@ const App = () => {
  };
 
  return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Switch>
-          <Route exact path="/" render={() => <CategoryPage category="Men" addToCart={addToCart} />} />
-          <Route exact path="/women" render={() => <CategoryPage category="Women" addToCart={addToCart} />} />
-          <Route exact path="/kids" render={() => <CategoryPage category="Kids" addToCart={addToCart} />} />
-        </Switch>
-        <CartOverlay cartItems={cartItems} removeFromCart={removeFromCart} placeOrder={placeOrder} />
-      </div>
-    </Router>
+  <Router>
+  <div className="App">
+    <Header />
+    <Switch>
+      <Route exact path="/category/:name" render={(props) => <CategoryPage category={props.match.params.name} addToCart={addToCart} />} />
+    </Switch>
+    <CartOverlay cartItems={cartItems} removeFromCart={removeFromCart} placeOrder={placeOrder} />
+  </div>
+</Router>
+
  );
 };
 

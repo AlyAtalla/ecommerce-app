@@ -1,9 +1,10 @@
 <?php
 
-namespace App\GraphQL\Resolvers;
+namespace Backend\GraphQL\Resolvers;
 
-use App\Models\Category;
-use App\Models\Product;
+use Backend\Classes\Category;
+use Backend\Classes\Product;
+use Exception;
 
 class CategoryResolver
 {
@@ -14,7 +15,8 @@ class CategoryResolver
             $transformedCategories = [];
 
             foreach ($categories as $category) {
-                $products = Product::where('category_id', $category->id)->get();
+                // For each category, fetch associated products
+                $products = $category->products()->get(); // Assuming you have defined a relationship between Category and Product models
                 $transformedCategory = [
                     'id' => $category->id,
                     'name' => $category->name,
@@ -25,25 +27,37 @@ class CategoryResolver
             }
 
             return $transformedCategories;
-        } catch (\Exception $e) {
-            throw new \Exception('Failed to fetch categories');
+        } catch (Exception $e) {
+            // Log the actual exception message for debugging
+            error_log($e->getMessage());
+            throw new Exception('Failed to fetch categories');
         }
     }
 
     public function getCategory($args)
     {
         try {
-            $category = Category::findOrFail($args['id']);
-            $products = Product::where('category_id', $category->id)->get();
+            $categoryId = $args['id'];
+
+            // Fetch the category by ID
+            $category = Category::findOrFail($categoryId);
+            
+            // Fetch associated products for this category
+            $products = $category->products()->get(); // Assuming you have defined a relationship between Category and Product models
+
+            // Transform the category and its products
             $transformedCategory = [
                 'id' => $category->id,
                 'name' => $category->name,
                 'description' => $category->description,
                 'products' => $products->toArray(),
             ];
+
             return $transformedCategory;
-        } catch (\Exception $e) {
-            throw new \Exception('Failed to fetch category');
+        } catch (Exception $e) {
+            // Log the actual exception message for debugging
+            error_log($e->getMessage());
+            throw new Exception('Failed to fetch category');
         }
     }
 }

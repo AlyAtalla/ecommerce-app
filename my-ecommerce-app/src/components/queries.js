@@ -10,6 +10,18 @@ export const GET_ALL_CATEGORIES = gql`
   }
 `;
 
+const GET_PRODUCTS_BY_CATEGORY = gql`
+ query GetProducts($category: String!) {
+    products(category: $category) {
+      id
+      name
+      description
+      image
+    }
+ }
+`;
+
+
 // mutations.js
 import { gql } from '@apollo/client';
 
