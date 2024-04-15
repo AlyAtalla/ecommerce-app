@@ -2,26 +2,48 @@
 
 namespace App\GraphQL\Resolvers;
 
-use App\Models\Category; // Assuming you have a Category model
-use App\GraphQL\Resolvers\ProductResolver; // Import the ProductResolver
+use App\Models\Category;
+use App\Models\Product;
 
 class CategoryResolver
 {
-    public function resolve($args)
+    public function getAllCategories()
     {
-        // Fetch all categories from the database
-        $categories = Category::all();
+        try {
+            $categories = Category::all();
+            $transformedCategories = [];
 
-        // Transform the categories to match the GraphQL schema, including resolving products
-        $transformedCategories = $categories->map(function ($category) {
-            return [
+            foreach ($categories as $category) {
+                $products = Product::where('category_id', $category->id)->get();
+                $transformedCategory = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'description' => $category->description,
+                    'products' => $products->toArray(),
+                ];
+                $transformedCategories[] = $transformedCategory;
+            }
+
+            return $transformedCategories;
+        } catch (\Exception $e) {
+            throw new \Exception('Failed to fetch categories');
+        }
+    }
+
+    public function getCategory($args)
+    {
+        try {
+            $category = Category::findOrFail($args['id']);
+            $products = Product::where('category_id', $category->id)->get();
+            $transformedCategory = [
                 'id' => $category->id,
                 'name' => $category->name,
-                'description' => $category->description, // Assuming 'description' is a field in your Category model
-                'products' => (new ProductResolver())->resolve(['categoryId' => $category->id]),
+                'description' => $category->description,
+                'products' => $products->toArray(),
             ];
-        });
-
-        return $transformedCategories;
+            return $transformedCategory;
+        } catch (\Exception $e) {
+            throw new \Exception('Failed to fetch category');
+        }
     }
 }
